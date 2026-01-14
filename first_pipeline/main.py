@@ -11,11 +11,11 @@ df['month'] = month
 
 print(df.head())
 
-df.to_csv(f'first_pipeline_output_month_{month}.csv', index=False)
-df.to_parquet(f'first_pipeline_output_month_{month}.parquet', index=False)
-
-
-
+df.to_csv(f'/app/output/first_pipeline_output_month_{month}.csv', index=False)
+df.to_parquet(f'/app/output/first_pipeline_output_month_{month}.parquet', index=False)
 
 print('arguments', sys.argv[2])
+
+# with open('/app/output/results.txt', 'w') as f:
+#     f.write(f"First pipeline executed, month: {month}\n")
 print("First pipeline executed, month:", month)

@@ -10,11 +10,11 @@ COPY pyproject.toml .python-version uv.lock ./
 
 
 RUN uv sync --locked
-
+ENV PATH="/code/.venv/bin:$PATH"
 #  RUN pip install pandas pyarrow
 
 
 
 COPY main.py .
 
-ENTRYPOINT ["uv", "run","python", "main.py"]
+ENTRYPOINT ["python", "main.py"]
