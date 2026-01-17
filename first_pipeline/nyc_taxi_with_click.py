@@ -33,7 +33,7 @@ parse_dates = [
 
 
 @click.command()
-@click.option('--host', default='localhost', help='PostgreSQL host')
+@click.option('--host', default='pgdatabase', help='PostgreSQL host')
 @click.option('--port', default=5432, type=int, help='PostgreSQL port')
 @click.option('--db', default='ny_taxi', help='PostgreSQL database name')
 @click.option('--user', default='root', help='PostgreSQL user')
