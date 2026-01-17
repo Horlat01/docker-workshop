@@ -1,0 +1,117 @@
+# # version: '3.8'
+
+# services:
+#   pgdatabase:
+#     image: postgres:18
+#     container_name: pgdatabase
+#     environment:
+#       POSTGRES_USER: root
+#       POSTGRES_PASSWORD: root
+#       POSTGRES_DB: ny_taxi
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - nyc_taxi_data:/var/lib/postgresql
+#     networks:
+#       - pg-network
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U root -d ny_taxi"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+
+#   pgadmin:
+#     image: dpage/pgadmin4
+#     container_name: pgadmin_web
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: admin@admin.com
+#       PGADMIN_DEFAULT_PASSWORD: root
+#     ports:
+#       - "8085:80"
+#     networks:
+#       - pg-network
+#     depends_on:
+#       - pgdatabase:
+#         condition: service_healthy
+
+#   data_ingestion:
+#     image: new:v005  # Your custom image with the Python script
+#     container_name: data_ingest
+#     environment:
+#       DB_HOST: pgdatabase
+#       DB_PORT: 5432
+#       DB_NAME: ny_taxi
+#       DB_USER: root
+#       DB_PASSWORD: root
+#     networks:
+#       - pg-network
+#     depends_on:
+#       pgdatabase:
+#         condition: service_healthy
+
+# volumes:
+#   nyc_taxi_data:
+
+# networks:
+#   pg-network:
+#     external: true
+
+
+
+
+
+services:
+  pgdatabase:
+    image: postgres:18
+    container_name: pgdatabase
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ny_taxi
+    ports:
+      - "5432:5432"
+    volumes:
+      - nyc_taxi_data:/var/lib/postgresql # Fixed: added /data
+    networks:
+      - pg-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d ny_taxi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_web
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "8085:80"
+    networks:
+      - pg-network
+    depends_on:
+      pgdatabase:  # Fixed: removed extra dash and fixed indentation
+        condition: service_healthy
+
+  data_ingestion:
+    image: new:v005
+    container_name: data_ingest
+    environment:
+      DB_HOST: pgdatabase
+      DB_PORT: 5432
+      DB_NAME: ny_taxi
+      DB_USER: root
+      DB_PASSWORD: root
+    networks:
+      - pg-network
+    depends_on:
+      pgdatabase:  # Fixed: proper indentation
+        condition: service_healthy
+
+volumes:
+  nyc_taxi_data:
+
+networks:
+  pg-network:
+    driver: bridge  # Changed from external: true
